@@ -58,14 +58,37 @@ The Colab notebook splits this 70 / 15 / 15 into train / validation / test
 
 ## Evaluation report
 
-> _Run the Colab notebook, download `evaluation_results.json` and
-> `confusion_matrix.png`, add them to this repo, then fill in the numbers below._
+Metrics from [`evaluation_results.json`](evaluation_results.json), test set of 5
+examples (`distilbert-base-uncased`):
 
-- **Fine-tuned accuracy:** _TBD_
-- **Zero-shot baseline accuracy:** _TBD_
-- **Improvement:** _TBD_
+| Model | Accuracy |
+|-------|----------|
+| Zero-shot baseline (Groq `llama-3.3-70b-versatile`) | **1.00** |
+| Fine-tuned DistilBERT | **0.40** |
+| Improvement | **−0.60** (regression) |
 
 ![Confusion matrix](confusion_matrix.png)
 
-_Add your analysis here: where does the fine-tuned model beat the baseline,
-which classes get confused, and what the confusion matrix reveals._
+**Analysis.** The fine-tuned model **lost** to the zero-shot baseline here, and
+the confusion matrix shows why: it predicted `hot_take` for **every** test
+example — it collapsed to a single class rather than learning the boundaries.
+The 70B baseline, by contrast, classified all 5 correctly.
+
+This is the expected failure mode for a dataset this small. With only 30
+examples the stratified split leaves ~21 for training and **5 for test**, far
+too few for DistilBERT to learn three categories or for the test accuracy to be
+meaningful (each example moves accuracy by 0.20). Three epochs on so little data
+gives the classification head no signal to separate `reasoned` from `hot_take`,
+so it defaults to the majority-ish class.
+
+**What would close the gap:**
+
+- **More data** — the project target of 200+ examples is the main lever; ~70+
+  per class would give the model and the test set room to be informative.
+- **More epochs / class weighting** to fight the single-class collapse on a
+  small set.
+- A larger held-out test split once there's enough data, so accuracy isn't
+  quantized to multiples of 0.20.
+
+For a dataset this small, the zero-shot LLM is simply the better classifier —
+fine-tuning only pays off once there's enough labeled data to learn from.

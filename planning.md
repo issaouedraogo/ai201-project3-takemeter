@@ -82,5 +82,6 @@ claim is still a `hot_take` if it's pure assertion. The annotation rule:
 
 ## Results
 
-Recorded in [`README.md`](README.md) after running the Colab notebook
-(`evaluation_results.json` + `confusion_matrix.png`).
+See the evaluation report in [`README.md`](README.md), backed by
+[`evaluation_results.json`](evaluation_results.json) and
+[`confusion_matrix.png`](confusion_matrix.png) from the Colab run.
