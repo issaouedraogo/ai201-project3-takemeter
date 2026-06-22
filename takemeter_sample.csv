@@ -1,0 +1,31 @@
+text,label
+"We moved off microservices back to a monolith — the network overhead and distributed-tracing cost outweighed the team-autonomy benefit at our ~15-engineer scale.",reasoned
+"Use a hashmap here — O(1) lookup instead of the O(n) loop you've got, which is why it slows down past ~10k items.",reasoned
+"Rust's borrow checker forced me to restructure the ownership of my cache, and that restructuring actually surfaced a use-after-free I'd had in the C version for years.",reasoned
+"I'd avoid premature sharding. We did it at 2M rows expecting growth, and the operational complexity cost us more dev time than the query latency ever would have.",reasoned
+"Postgres over Mongo for this: your data is clearly relational (orders, line items, customers) and you'll want joins and transactions you can't easily replicate in a document store.",reasoned
+"The tradeoff with type hints in Python is they don't enforce anything at runtime, but in a 50k-line codebase the editor autocomplete and mypy catches paid for themselves within a month.",reasoned
+"Tabs vs spaces matters less than just running a formatter in CI — we adopted Black and the entire bikeshedding thread on our team disappeared overnight.",reasoned
+"Be careful with async everywhere: we made every function async 'for consistency' and added latency from the event-loop overhead on calls that were never I/O-bound.",reasoned
+"REST was fine until our mobile team needed five round-trips per screen; we moved those endpoints to GraphQL specifically to cut over-fetching, and kept REST for the rest.",reasoned
+"If you're seeing memory grow unbounded, check whether you're holding references in a module-level list — that's the most common leak I've debugged in long-running Python services.",reasoned
+"ORMs are a cancer and anyone who uses them doesn't understand databases.",hot_take
+"JavaScript is the worst language ever created and the web would be better off if it never existed.",hot_take
+"Agile is just a scam invented to sell certifications. Real engineers don't need standups.",hot_take
+"If you use tabs instead of spaces you should not be allowed near a keyboard.",hot_take
+"Microservices are always the right call. Monoliths are legacy garbage and that's just a fact.",hot_take
+"Python is a toy language. No serious software has ever been built in it.",hot_take
+"Anyone still using REST in 2024 is hopelessly behind. GraphQL won, get over it.",hot_take
+"Comments in code are a code smell. If you need comments your code is just bad.",hot_take
+"NoSQL is trash because it's not real SQL. Just use Postgres for literally everything always.",hot_take
+"TypeScript is pointless. Types are training wheels for people who can't write JavaScript.",hot_take
+"lol Java moment",noise
+"this.",noise
+"skill issue",noise
+"finally someone said it",noise
+"+1",noise
+"who asked",noise
+"hahaha classic",noise
+"same tbh",noise
+"thanks for coming to my ted talk",noise
+"first",noise
