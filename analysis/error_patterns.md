@@ -35,6 +35,13 @@ classifier* that has learned to ignore the input.
   2/5 examples that happen to be true `hot_take`.
 - Holds across all three error cases — the failures are not topic-specific, they
   are *every* non-`hot_take` example.
+- **The collapse is low-confidence.** Reading the softmax shows every prediction
+  sits at **≈34%** — barely above the 33.3% chance level for 3 classes. The
+  model's three class probabilities are nearly tied; `hot_take` wins by a hair.
+  So this is less a *confident* collapse than a near-uniform output whose argmax
+  is unstable: re-training reshuffles which examples land right (a fresh run gave
+  different per-example predictions at the same ~0.40 accuracy). That instability
+  is itself the signature of a model that learned almost nothing.
 
 ## Pattern 2 (contributing, hypothesis): topic-keyword bias over reasoning
 

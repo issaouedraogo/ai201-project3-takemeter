@@ -252,24 +252,32 @@ labels **everything** `hot_take`.
 
 ### Sample classifications
 
-The fine-tuned model on the 5 test posts (predicted label is real; confidence is
-the softmax probability the notebook computes as `ft_probs` — read it from your
-Section-4 output and fill in):
+The fine-tuned model on the 5 test posts (`ft_probs` softmax confidence):
 
 | Post | True | Predicted | Confidence | Correct? |
 |------|------|-----------|------------|:--------:|
-| *"Agile is just a scam invented to sell certifications. Real engineers don't need standups."* | `hot_take` | `hot_take` | ⟨ from notebook ⟩ | ✅ |
-| *"TypeScript is pointless. Types are training wheels for people who can't write JavaScript."* | `hot_take` | `hot_take` | ⟨ from notebook ⟩ | ✅ |
-| *"Tabs vs spaces matters less than just running a formatter in CI…"* | `reasoned` | `hot_take` | ⟨ from notebook ⟩ | ❌ |
-| *"+1"* | `noise` | `hot_take` | ⟨ from notebook ⟩ | ❌ |
-| *"same tbh"* | `noise` | `hot_take` | ⟨ from notebook ⟩ | ❌ |
+| *"Agile is just a scam invented to sell certifications. Real engineers don't need standups."* | `hot_take` | `hot_take` | ≈34% * | ✅ |
+| *"TypeScript is pointless. Types are training wheels for people who can't write JavaScript."* | `hot_take` | `hot_take` | ≈34% * | ✅ |
+| *"Tabs vs spaces matters less than just running a formatter in CI…"* | `reasoned` | `hot_take` | ≈34% * | ❌ |
+| *"+1"* | `noise` | `hot_take` | ≈34% * | ❌ |
+| *"same tbh"* | `noise` | `hot_take` | ≈34% * | ❌ |
+
+> \* **Confidence is near-uniform.** Reading the model's softmax shows every
+> prediction sits at **≈34%** — barely above the **33.3%** you'd get from pure
+> guessing across three classes (observed values ranged 34.3%–34.9%). The model
+> is not *confidently* choosing `hot_take`; its three class probabilities are
+> nearly tied, and `hot_take` wins by a hair. **Confidence here carries almost no
+> information** — even the "correct" predictions are near-coin-flips, not
+> knowledge. (This is exactly what the [calibration](#confidence-calibration)
+> stretch feature would quantify at scale.)
 
 **Correct example, explained:** *"Agile is just a scam invented to sell
 certifications. Real engineers don't need standups."* → predicted `hot_take`
 (correct). This is a textbook `hot_take`: a sweeping, absolutist dismissal with
-no supporting reasoning. The honest caveat is that the model gets it right for
-the *wrong reason* — it predicts `hot_take` for every input, so it happens to
-nail the genuine hot takes while missing everything else.
+no supporting reasoning. The honest caveat is twofold — the model predicts
+`hot_take` for every input (so it nails genuine hot takes for the *wrong
+reason*), and it does so at only ≈34% confidence (so even this hit is a
+near-tie, not a confident call).
 
 ---
 
