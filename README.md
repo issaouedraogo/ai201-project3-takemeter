@@ -315,16 +315,6 @@ meaningful comparison.
 
 ---
 
-## Demo video
-
-A 3–5 minute walkthrough (link to be added on submission) covering: 3–5 posts
-classified by the fine-tuned model with label + confidence; one correct
-prediction narrated; one incorrect prediction narrated with the reason; and a
-brief tour of this evaluation report. Script + demo cell in
-[`demo/`](demo/).
-
----
-
 ## Stretch features
 
 | Feature | Status | Where |
