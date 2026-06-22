@@ -320,4 +320,56 @@ meaningful comparison.
 A 3–5 minute walkthrough (link to be added on submission) covering: 3–5 posts
 classified by the fine-tuned model with label + confidence; one correct
 prediction narrated; one incorrect prediction narrated with the reason; and a
-brief tour of this evaluation report.
+brief tour of this evaluation report. Script + demo cell in
+[`demo/`](demo/).
+
+---
+
+## Stretch features
+
+| Feature | Status | Where |
+|---------|--------|-------|
+| Error pattern analysis | ✅ completed | [`analysis/error_patterns.md`](analysis/error_patterns.md) |
+| Deployed interface | ✅ completed | [`interface/`](interface/) |
+| Inter-annotator reliability | 🟡 scaffolded (needs 2nd annotator) | [`annotation/`](annotation/) |
+| Confidence calibration | 🟡 scaffolded (needs larger test set) | [`calibration/`](calibration/) |
+
+### Error pattern analysis
+[`analysis/error_patterns.md`](analysis/error_patterns.md) identifies the
+*systematic* error — a **single-class collapse** (every input → `hot_take`,
+driven by data starvation) — distinguished from a secondary, still-unconfirmed
+topic-keyword hypothesis, with each claim verified against the confusion matrix.
+
+### Deployed interface (Gradio)
+[`interface/app.py`](interface/app.py) accepts a post and shows the predicted
+label + confidence over all three classes. The model lives in the Colab runtime,
+so run it there:
+
+```python
+# In a Colab cell, after training has produced ./takemeter-model:
+!pip install -q gradio
+!python interface/app.py        # prints a public *.gradio.live share URL
+```
+
+To run locally instead: download the `takemeter-model/` folder from Colab, then
+
+```bash
+pip install -r interface/requirements.txt
+TAKEMETER_MODEL=/path/to/takemeter-model python interface/app.py
+```
+
+### Inter-annotator reliability (scaffolding)
+1. `python annotation/make_sheet.py` → produces a shuffled, label-free
+   `annotation_sheet.csv`.
+2. A second person labels it independently using
+   [`annotation/labeling_guide.md`](annotation/labeling_guide.md).
+3. `python annotation/compute_agreement.py takemeter_sample.csv annotation/annotation_sheet.csv`
+   → reports % agreement, **Cohen's kappa**, the disagreement list, and the
+   annotator-vs-annotator confusion matrix.
+
+### Confidence calibration (scaffolding)
+1. Run [`calibration/collect_predictions.py`](calibration/collect_predictions.py)
+   in Colab against a held-out set → `predictions_with_confidence.csv`.
+2. `python calibration/calibration.py predictions_with_confidence.csv` → per-bin
+   accuracy vs. confidence + **Expected Calibration Error**. Meaningful only once
+   the test set is large (50+); the current 5-example set is too small.

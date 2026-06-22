@@ -237,3 +237,39 @@ whether errors concentrate in one class; and whether any errors are actually
 rows before it goes in the write-up — I confirm the cited examples really show
 the pattern and count how many of the errors it explains. The LLM proposes; the
 confusion matrix and a manual recount decide. Unverified patterns don't ship.
+
+---
+
+## 8. Stretch features
+
+Planning updated **before** building each, per the project instructions.
+
+### 8.1 Error pattern analysis — *completed*
+Go beyond listing wrong predictions to name a *systematic* pattern. Method:
+execute §7.3 — examine the misclassifications, identify the pattern, and verify
+it against `confusion_matrix.png` and the deterministically reproduced test
+split (`random_state=42`). Output: [`analysis/error_patterns.md`](analysis/error_patterns.md).
+
+### 8.2 Deployed interface — *completed*
+A UI that takes a new post and shows label + confidence. A Gradio app
+([`interface/app.py`](interface/app.py)) loads the fine-tuned checkpoint and
+returns the probability over all three labels. It runs in Colab with a public
+share link (the model lives in the Colab runtime); run instructions are in the
+README.
+
+### 8.3 Inter-annotator reliability — *scaffolded* (needs a second annotator)
+Measure agreement with a second labeler on 30+ examples.
+[`annotation/make_sheet.py`](annotation/make_sheet.py) generates a shuffled,
+label-free sheet; a second person labels it independently using
+[`annotation/labeling_guide.md`](annotation/labeling_guide.md);
+[`annotation/compute_agreement.py`](annotation/compute_agreement.py) reports
+percentage agreement + Cohen's kappa + a disagreement breakdown. Completion
+requires the second annotator's labels.
+
+### 8.4 Confidence calibration — *scaffolded* (needs a larger test set)
+Check whether higher-confidence predictions are actually more accurate.
+[`calibration/collect_predictions.py`](calibration/collect_predictions.py) emits
+`(text, true, pred, confidence)`; [`calibration/calibration.py`](calibration/calibration.py)
+bins by confidence and reports per-bin accuracy + Expected Calibration Error.
+**Caveat:** statistically meaningless on the current 5-example test set — run it
+once the dataset reaches the 200+ target.
