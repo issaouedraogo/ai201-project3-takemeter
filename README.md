@@ -10,23 +10,23 @@ model against a zero-shot large-language-model baseline (Groq
 
 ## Labels
 
-| Label | Meaning | Example |
-|-------|---------|---------|
-| `reasoned` | A substantive opinion backed by a tradeoff, an experience, or evidence. | *"We moved off microservices back to a monolith — the network overhead outweighed the team-autonomy benefit at our ~15-engineer scale."* |
-| `hot_take` | A strong, absolutist opinion stated with no supporting reasoning. | *"ORMs are a cancer and anyone who uses them doesn't understand databases."* |
-| `noise` | Low-content reactions, memes, or filler that carry no opinion. | *"skill issue"* |
+| Label      | Meaning                                                                 | Example                                                                                                                                  |
+| ---------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `reasoned` | A substantive opinion backed by a tradeoff, an experience, or evidence. | _"We moved off microservices back to a monolith — the network overhead outweighed the team-autonomy benefit at our ~15-engineer scale."_ |
+| `hot_take` | A strong, absolutist opinion stated with no supporting reasoning.       | _"ORMs are a cancer and anyone who uses them doesn't understand databases."_                                                             |
+| `noise`    | Low-content reactions, memes, or filler that carry no opinion.          | _"skill issue"_                                                                                                                          |
 
 See [`planning.md`](planning.md) for the full taxonomy, label definitions, and
 dataset-design notes.
 
 ## Repository contents
 
-| File | Description |
-|------|-------------|
-| [`planning.md`](planning.md) | Label taxonomy, dataset design, and annotation decisions. |
-| [`takemeter_sample.csv`](takemeter_sample.csv) | The labeled dataset (`text`, `label` columns). |
-| `evaluation_results.json` | Metrics produced by the Colab notebook (baseline vs. fine-tuned accuracy). |
-| `confusion_matrix.png` | Confusion matrix for the fine-tuned model on the test set. |
+| File                                           | Description                                                                |
+| ---------------------------------------------- | -------------------------------------------------------------------------- |
+| [`planning.md`](planning.md)                   | Label taxonomy, dataset design, and annotation decisions.                  |
+| [`takemeter_sample.csv`](takemeter_sample.csv) | The labeled dataset (`text`, `label` columns).                             |
+| `evaluation_results.json`                      | Metrics produced by the Colab notebook (baseline vs. fine-tuned accuracy). |
+| `confusion_matrix.png`                         | Confusion matrix for the fine-tuned model on the test set.                 |
 
 > The notebook itself lives in Colab and is **not** committed here — this repo
 > holds the planning, dataset, and downloaded outputs.
@@ -36,11 +36,11 @@ dataset-design notes.
 `takemeter_sample.csv` has two columns, `text` and `label`, with the label
 distribution:
 
-| Label | Count |
-|-------|-------|
-| `reasoned` | 10 |
-| `hot_take` | 10 |
-| `noise` | 10 |
+| Label      | Count |
+| ---------- | ----- |
+| `reasoned` | 10    |
+| `hot_take` | 10    |
+| `noise`    | 10    |
 
 The Colab notebook splits this 70 / 15 / 15 into train / validation / test
 (stratified, `random_state=42`).
@@ -61,11 +61,11 @@ The Colab notebook splits this 70 / 15 / 15 into train / validation / test
 Metrics from [`evaluation_results.json`](evaluation_results.json), test set of 5
 examples (`distilbert-base-uncased`):
 
-| Model | Accuracy |
-|-------|----------|
-| Zero-shot baseline (Groq `llama-3.3-70b-versatile`) | **1.00** |
-| Fine-tuned DistilBERT | **0.40** |
-| Improvement | **−0.60** (regression) |
+| Model                                               | Accuracy               |
+| --------------------------------------------------- | ---------------------- |
+| Zero-shot baseline (Groq `llama-3.3-70b-versatile`) | **1.00**               |
+| Fine-tuned DistilBERT                               | **0.40**               |
+| Improvement                                         | **−0.60** (regression) |
 
 ![Confusion matrix](confusion_matrix.png)
 
