@@ -156,17 +156,36 @@ to avoid substring collisions); unmatched replies count as unparseable. Results
 were collected by running this over the **same 5-example locked test set** used
 for the fine-tuned model, so the comparison is apples-to-apples.
 
-**Prompt used:**
-
-> ⚠️ **TODO (paste your actual prompt):** the prompt you wrote lives in your
-> Colab notebook (the `SYSTEM_PROMPT` variable) and is not in the committed
-> files. Paste the exact text here. It should name the community, define each
-> label in one sentence, give one example per label, and instruct the model to
-> reply with only the label name. (The baseline scored 1.00, so your filled-in
-> prompt clearly worked.)
+**Prompt used** (the `SYSTEM_PROMPT` from the notebook; each test post is then
+sent as a user message `Classify this post:\n\n{text}`):
 
 ```text
-<paste SYSTEM_PROMPT from your notebook here>
+You are classifying comments from tech discussion communities (r/programming,
+Hacker News, r/ExperiencedDevs). Assign each comment to exactly one category
+based on the QUALITY of the take as discourse — NOT whether the opinion is
+correct. A well-argued comment that is factually wrong is still "reasoned".
+
+reasoned: Makes a claim backed by reasoning, evidence, personal experience, or
+acknowledged tradeoffs. Teaches the reader something. May be short if it still
+contains a real argument.
+Example: "We moved off microservices back to a monolith — the network overhead and distributed-tracing cost outweighed the team-autonomy benefit at our ~15-engineer scale."
+
+hot_take: A strong, sweeping opinion stated as fact with no real support.
+Absolutist or dismissive. A thrown-in justification ("because it's slow") does
+not count as reasoning.
+Example: "ORMs are a cancer and anyone who uses them doesn't understand databases."
+
+noise: Low-information content — jokes, one-liners, me-too replies, pure
+emotional reaction, or content-free snark.
+Example: "lol Java moment"
+
+Respond with ONLY the label name, exactly as written, lowercase, with the
+underscore. Do not explain your reasoning.
+
+Valid labels:
+reasoned
+hot_take
+noise
 ```
 
 ---
